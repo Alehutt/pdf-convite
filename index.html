@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convite de Aniversário - Ana Alice</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: url('https://www.transparenttextures.com/patterns/floral-pattern.png') repeat,
+                        linear-gradient(135deg, #fff1f1 0%, #f8e1e9 100%);
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2), 0 0 20px rgba(183, 110, 121, 0.3);
+            overflow: hidden;
+            animation: fadeIn 2s ease-in-out;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #f7cac9 0%, #dec1b4 100%);
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 3px solid #b76e79;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            left: -60px;
+            width: 250px;
+            height: 250px;
+            background: url('https://www.pngall.com/wp-content/uploads/2016/05/Flower-PNG-Image.png') no-repeat center;
+            background-size: 180px;
+            opacity: 0.25;
+            transform: rotate(-30deg);
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -60px;
+            right: -60px;
+            width: 250px;
+            height: 250px;
+            background: url('https://www.pngall.com/wp-content/uploads/2016/05/Flower-PNG-Image.png') no-repeat center;
+            background-size: 180px;
+            opacity: 0.25;
+            transform: rotate(30deg);
+        }
+
+        .header h1 {
+            font-family: 'Parisienne', cursive;
+            font-size: 3.5em;
+            color: #b76e79;
+            text-shadow: 0 0 10px rgba(183, 110, 121, 0.8), 0 0 20px rgba(255, 255, 255, 0.5);
+            margin-bottom: 15px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .content {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .content p {
+            font-size: 1.3em;
+            margin: 12px 0;
+            color: #444;
+        }
+
+        .content p strong {
+            color: #b76e79;
+        }
+
+        .content .highlight {
+            font-family: 'Parisienne', cursive;
+            font-size: 1.8em;
+            color: #b76e79;
+            margin: 20px 0;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .buttons {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #b76e79, #d49ba2);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 1.2em;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(183, 110, 121, 0.5);
+        }
+
+        .btn::after {
+            content: '✨';
+            position: absolute;
+            font-size: 1.5em;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn:hover::after {
+            opacity: 1;
+        }
+
+        .gift-list {
+            margin-top: 40px;
+            text-align: left;
+            padding: 25px;
+            background: #fff1f1;
+            border-radius: 15px;
+            border: 1px solid #f7cac9;
+        }
+
+        .gift-list h2 {
+            font-family: 'Parisienne', cursive;
+            font-size: 2.2em;
+            color: #b76e79;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .gift-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .gift-list li {
+            font-size: 1.1em;
+            margin: 12px 0;
+            color: #555;
+        }
+
+        .gift-list li::before {
+            content: '🌸';
+            margin-right: 12px;
+        }
+
+        .divider {
+            font-size: 2.5em;
+            color: #b76e79;
+            text-align: center;
+            margin: 25px 0;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(183, 110, 121, 0.8), 0 0 20px rgba(255, 255, 255, 0.5); }
+            to { text-shadow: 0 0 15px rgba(183, 110, 121, 1), 0 0 30px rgba(255, 255, 255, 0.7); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+
+        .flower {
+            position: absolute;
+            opacity: 0.4;
+            animation: float 7s ease-in-out infinite;
+        }
+
+        .flower1 {
+            top: 5%;
+            left: 5%;
+            width: 60px;
+            height: 60px;
+            background: url('https://www.pngall.com/wp-content/uploads/2016/05/Flower-PNG-Image.png') no-repeat center;
+            background-size: contain;
+        }
+
+        .flower2 {
+            bottom: 5%;
+            right: 5%;
+            width: 70px;
+            height: 70px;
+            background: url('https://www.pngall.com/wp-content/uploads/2016/05/Flower-PNG-Image.png') no-repeat center;
+            background-size: contain;
+        }
+
+        .flower3 {
+            top: 20%;
+            right: 10%;
+            width: 50px;
+            height: 50px;
+            background: url('https://www.pngall.com/wp-content/uploads/2016/05/Flower-PNG-Image.png') no-repeat center;
+            background-size: contain;
+            animation-delay: 2s;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+            }
+
+            .header h1 {
+                font-size: 2.8em;
+            }
+
+            .content p {
+                font-size: 1.1em;
+            }
+
+            .content .highlight {
+                font-size: 1.5em;
+            }
+
+            .btn {
+                padding: 12px 25px;
+                font-size: 1em;
+            }
+
+            .gift-list h2 {
+                font-size: 1.9em;
+            }
+
+            .flower {
+                display: none; /* Hide extra flowers on small screens for performance */
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
+</head>
+<body>
+    <canvas id="sparkles"></canvas>
+    <div class="container">
+        <div class="header">
+            <h1>18 anos de Ana Alice</h1>
+        </div>
+        <div class="content">
+            <p class="highlight">Venha participar desse momento especial ao meu lado!</p>
+            <p><strong>18 anos</strong></p>
+            <p><strong>Dia:</strong> 14 Junho</p>
+            <p><strong>Horário:</strong> 19h</p>
+            <p><strong>Confirme sua presença até:</strong> 31/05</p>
+            <div class="divider">இ</div>
+            <div class="buttons">
+                <a href="https://wa.me/+559181022884?text=Confirmo%20minha%20presença%20no%20aniversário%20de%2018%20anos%20da%20Ana%20Alice!" target="_blank" class="btn">Clique aqui para confirmar presença</a>
+                <a href="https://www.google.com/maps" target="_blank" class="btn">Clique aqui para localização da festa</a>
+                <button class="btn" onclick="document.querySelector('.gift-list').scrollIntoView({behavior: 'smooth'})">Clique aqui para sugestões de presentes</button>
+            </div>
+            <div class="gift-list">
+                <h2>Sugestões de Presentes</h2>
+                <ul>
+                    <li>Sandália Havaianas Nº 36-37</li>
+                    <li>Rasteirinha Nº 37 ("Sapatinho de Luxo" ou "Rasteirissíma")</li>
+                    <li>Camisetas T-shirt (tam. M)</li>
+                    <li>Pijama (tam. M)</li>
+                    <li>"Natura", "Boticário", "Avon", "Eudora" ou "Quem disse, Berenice"</li>
+                    <li>Hidratante corporal</li>
+                    <li>Perfume</li>
+                    <li>Body Splash</li>
+                    <li>Maquiagem em geral</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="flower flower1"></div>
+    <div class="flower flower2"></div>
+    <div class="flower flower3"></div>
+    <script>
+        // Sparkle effect
+        const canvas = document.getElementById('sparkles');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        for (let i = 0; i < 50; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 5 + 2,
+                speedX: Math.random() * 0.5 - 0.25,
+                speedY: Math.random() * 0.5 - 0.25
+            });
+        }
+
+        function animateSparkles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(183, 110, 121, ${Math.random() * 0.5 + 0.5})`;
+                ctx.fill();
+                p.x += p.speedX;
+                p.y += p.speedY;
+                if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+            });
+            requestAnimationFrame(animateSparkles);
+        }
+        animateSparkles();
+
+        // Button animation
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                btn.style.transform = 'scale(1.1)';
+                setTimeout(() => btn.style.transform = 'scale(1)', 200);
+            });
+        });
+
+        // Resize canvas on window resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
